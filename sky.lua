@@ -75,14 +75,14 @@ poffsets = {
   eflowers = 0xB266A8,
   pshout = 0x22DE0,
   pdamage = 0x2245C,
-  wwings = 0x4E069C,
-  wobjs = 0x8F88D4,
+  wwings = 0x4E066C,
+  wobjs = 0x8F88A4,
   wbtns = 0x91E178,
   gohome = 0x23C18,
   elist = 0x1315BF3,
   gspeed = 0x156150C,
   eused = 0x2B48C,
-  vcandles = 0x5953D0,
+  vcandles = 0x501B44,
   gchat = 0x93F234,
   ucandle = 0x595400,
   fullmagic = 0x27B68,
@@ -92,10 +92,10 @@ poffsets = {
   sglow = 0x21D00,
   wwind = 0x9DC4BC,
   pwalk = 0x2D9FAE8,
-  cfrags = 0x91AC00,
+  cfrags = 0x91ABD0,
   gcamera = 0xF9086C,
   ecrabs = 0x5A49CC,
-  uihook = 0x94144C,
+  uihook = 0x94143C,
   shoutscale = 0x255A8,
   daily = 0x1303A24
   }
@@ -968,7 +968,7 @@ eoffsets.nentity = gg.getResults(gg.getResultCount())[1].address
 ]]--
 poffsets.elist = eoffsets.nentity - poffsets.elist
 nn = eoffsets.nentity + 0x1D4
-  for i=1,450 do
+for i=1,450 do
   table.insert(candles,{address=nn+(i-1)*0x1C0,flags=16,value=0,name='cc',freeze=false})
 end
 --B0700C
@@ -1443,13 +1443,21 @@ function pmagic(arr,id,sil)
   else
     setadd(tgt,gg.TYPE_DWORD,id,false)
   end
+  if id ~= 0 then
   setadd(tgt + 0x8,gg.TYPE_DWORD,2139095040,false)
-  --setadd(tgt + 0x10,gg.TYPE_DWORD,1600132692,false)
-  --setadd(tgt + 0x18,gg.TYPE_DWORD,-1720562886,false)
-  --setadd(tgt + 0x1C,gg.TYPE_DWORD,-1806973714,false)
-  --setadd(tgt + 0x20,gg.TYPE_DWORD,1020395176,false)
-  --setadd(tgt + 0x24,gg.TYPE_DWORD,131004170,false)
-  setadd(tgt + 0x28,gg.TYPE_DWORD,sil,false)
+   --[[
+  setadd(tgt + 0x8,gg.TYPE_DWORD,1629255046,false)
+  setadd(tgt + 0x10,gg.TYPE_DWORD,1629253046,false)
+  setadd(tgt + 0x18,gg.TYPE_DWORD,1358535875,false)
+  setadd(tgt + 0x1C,gg.TYPE_DWORD,-398117947,false)
+  setadd(tgt + 0x20,gg.TYPE_DWORD,-1848272760,false)
+  setadd(tgt + 0x24,gg.TYPE_DWORD,1993010466,false)
+  ]]--
+ setadd(tgt + 0x28,gg.TYPE_DWORD,sil,false)
+  else
+    setadd(tgt + 0x8,gg.TYPE_DWORD,0,false)
+    setadd(tgt + 0x28,gg.TYPE_DWORD,0,false)
+  end
   setadd(pbase + poffsets.magic + 0xC00,gg.TYPE_DWORD,12,true)
   --gg.toast(poffsets.magic + 0xC00)
   setadd(tgt + 0x28,gg.TYPE_DWORD,sil,false)
@@ -2118,6 +2126,14 @@ function magicmenu()
     end
     table.insert(y,'手册')
     x=gg.choice(y,nil,'选择魔法')
+        for i = 0,9 do
+      xa = getadd(pbase + (poffsets.magic + (0x30 * i)),gg.TYPE_DWORD)
+      for h,d in ipairs(mid) do
+        if xa == d[2] then
+          mslot[i+1] = d[1]
+        end
+      end
+    end
     t=gg.choice(mslot,nil,'选择位置')
     if (x ~= nil and t ~= nil) then
       gg.setVisible(false)
