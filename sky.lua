@@ -2682,7 +2682,7 @@ function domenu()
         ,'🆖️背包'
         ,'📝脚本设置'
         ,'⚠️开发者实验室'
-      },nil,'')
+      },nil,'by行者 QQ：1805153122')
       if m == 1 then
         nn = 0
         nn = getadd(pbase,gg.TYPE_DWORD)
