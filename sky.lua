@@ -300,9 +300,9 @@ cworld = {
     {"伊甸园1", 'StormStart'},
     {"伊甸园2", 'Storm'},
     {"[任天堂] 3D遇镜", 'Nintendo_CandleSpace'},
-    {"⚠️伊甸园 献祭牺牲⚠️", 'StormEnd'},
-    {"⚠️伊甸园 再生之路1⚠️", 'OrbitMid'},
-    {"⚠️伊甸园 再生之路2⚠️", 'OrbitEnd'},
+    {"⚠️暴风眼一图⚠️", 'StormEnd'},
+    {"⚠️再生之路1(抱抱)⚠️", 'OrbitMid'},
+    {"⚠️再生之路2⚠️", 'OrbitEnd'},
     {"⚠️星光大道⚠️", 'CandleSpaceEnd'},
     {"⚠️结尾动画⚠️", 'Credit'},
  }
@@ -615,7 +615,7 @@ function addtostr(add,amount)
 end
 
 function getpatch()
-  API = gg.makeRequest('https://gitee.com/xingzhelht/sharelocate/raw/master/Sharelocate.lua').content
+  API = gg.makeRequest('https://raw.githubusercontent.com/Walker-by/sky/main/Sharelocate.lua').content
   if not API then
     gg.toast('加载API失败')
   else
