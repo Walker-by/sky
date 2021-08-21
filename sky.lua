@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.19"
+ddd = "脚本更新时间21.08.20"
 pshare = ''
 umenu = true
 fasthome = true
@@ -28,7 +28,8 @@ psettings = {
   showmenu = true,
   smcrdelay = 1000,
   smwrdelay = 1000,
-  portaldef = false
+  portaldef = false,
+  fhspeed = 100
   }
   
 scriptv = {process ='com.tgc.sky.android',version=175117}
@@ -71,7 +72,7 @@ poffsets = {
   gesture = 0x2C4C4,
   magic = 0x2B788,
   bsize = 0x25494,
-  uemote = -0x43D50,
+  uemote = -0x43D20,
   eflowers = 0xB266A8,
   pshout = 0x22DE0,
   pdamage = 0x2245C,
@@ -79,11 +80,11 @@ poffsets = {
   wobjs = 0x8F88A4,
   wbtns = 0x91E178,
   gohome = 0x23C18,
-  elist = 0x1315BF3,
+  elist = 0x138BD73,
   gspeed = 0x156150C,
   eused = 0x2B48C,
   vcandles = 0x501B44,
-  gchat = 0x93F234,
+  gchat = 0x93F224,
   ucandle = 0x595400,
   fullmagic = 0x27B68,
   mymagic = 0x23A18,
@@ -647,7 +648,7 @@ function tbltostr(tbl)
         elseif type(v) == "boolean" then
             result = result..tostring(v)
         else
-            result = result.."\""..v.."\""
+            result = result..v
         end
         result = result..","
     end
@@ -678,8 +679,8 @@ function loadsave()
     if not ert then
       savedata()
     end
-    if psettings.portaldef == nil then
-      psettings.portaldef = false
+    if psettings.fhspeed == nil then
+      psettings.fhspeed = 100
     end
   end
 end
@@ -1752,15 +1753,16 @@ end
 function htrigger()
   if fastvalue then
     fastmax = fastmax + 1
-    if getadd(pbase + poffsets.gohome,gg.TYPE_FLOAT) == 1 or fastmax > 12 then
+    if getadd(pbase + poffsets.gohome,gg.TYPE_FLOAT) == 1 or fastmax > 25 then
       gamespeed(1)
       fastvalue = false
       fastmax = 0
+      setadd(pbase + poffsets.gohome,gg.TYPE_FLOAT,1,false)
     end
   else
     if getadd(pbase + poffsets.gohome,gg.TYPE_FLOAT) ~= 1 then
       fastmax = 0
-      gamespeed(100)
+      gamespeed(psettings.fhspeed)
       fastvalue = true
     end
   end
@@ -2617,6 +2619,7 @@ function scsettings()
     '手动收集蜡烛时间: ' .. psettings.smcrdelay .. 'ms',
     '手动收集翼时间: ' .. psettings.smwrdelay .. 'ms',
     '使用传统地图转换器 : ' .. boolling(psettings.portaldef),
+    '快速回遇镜速度: ' .. psettings.fhspeed,
   },nil,'')
   if xcs == nil then return; end
   if xcs == 1 then
@@ -2657,6 +2660,9 @@ function scsettings()
   end
   if xcs == 13 then
     psettings.portaldef = toggle(psettings.portaldef)
+  end
+  if xcs == 14 then
+    psettings.fhspeed = inputnum(100)
   end
   savedata()
   scsettings()
@@ -2805,7 +2811,9 @@ function domenu()
         table.insert(y,'⚠️游戏崩溃')
          r=gg.choice(y,nil,'快速回遇镜功能将被禁用！')
          if (r ~= nil) then 
-           fasthome = false
+           if psettings.fhspeed > 1 then
+            fasthome = false
+           end
            xre = eoffsets.nentity - poffsets.wingmap
            setadd(xre,gg.TYPE_QWORD,49,false)
            setadd(xre+0x4,gg.TYPE_DWORD,0,false)
@@ -3918,3 +3926,5 @@ while true do
   end
    gg.sleep(100)
 end
+
+--
