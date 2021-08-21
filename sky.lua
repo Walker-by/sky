@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.18"
+ddd = "脚本更新时间21.08.19"
 pshare = ''
 umenu = true
 fasthome = true
@@ -97,7 +97,8 @@ poffsets = {
   ecrabs = 0x5A49CC,
   uihook = 0x94143C,
   shoutscale = 0x255A8,
-  daily = 0x1303A24
+  daily = 0x1303A24,
+  wingmap = 0x12CE41C
   }
 
 allmagics = {}
@@ -217,6 +218,8 @@ mid = {
 {'🆕️夏伞',2878211958,0},
 {'🆕️夏帽',2052387583,2},
 {'🆕️躺椅',2875484078,0},
+{'🆕️金色斗篷',330655056,1},
+{'🆕️呼喊魔法',2413103828,0},
  {'❌取消所有魔法',0,0}
 };
 windwallset = {
@@ -2757,6 +2760,7 @@ function domenu()
         x=gg.choice({
         '➡️ 本图地点传送'
       	,'⏩随意图地点传送'
+      	,'🤝和好友一起换地图'
       	,'🏠更改回遇镜位置'
       	,'⬇️保存此位置'
       	,'⬆️加载保存的位置' .. math.floor(px) .. ', ' .. math.floor(py) .. ', ' ..math.floor(pz)
@@ -2781,7 +2785,7 @@ function domenu()
           table.insert(y,cworld[i][1])
         end
         table.insert(y,'⚠️输入代码')
-         r=gg.choice(y,nil,'选择并且回家')
+         r=gg.choice(y,nil,'')
          if (r ~= nil) then 
            if r == #y then
             istr = inputstr()
@@ -2793,7 +2797,31 @@ function domenu()
             end
          end
       	end
-      	if x == 3 then 
+      	if x == 3 then
+      	  y={}
+        for i, v in ipairs(cworld) do
+          table.insert(y,cworld[i][1])
+        end
+        table.insert(y,'⚠️游戏崩溃')
+         r=gg.choice(y,nil,'快速回遇镜功能将被禁用！')
+         if (r ~= nil) then 
+           fasthome = false
+           xre = eoffsets.nentity - poffsets.wingmap
+           setadd(xre,gg.TYPE_QWORD,49,false)
+           setadd(xre+0x4,gg.TYPE_DWORD,0,false)
+           setadd(xre+0x8,gg.TYPE_DWORD,28,false)
+           setadd(xre+0xC,gg.TYPE_DWORD,0,false)
+           setadd(xre+0x10,gg.TYPE_QWORD,eoffsets.nentity - poffsets.wingmap + 0x36D0,false)
+           if r == #y then
+            setstr(eoffsets.nentity - poffsets.wingmap + 0x36D0,24,'ExMachina')
+          else
+            setstr(eoffsets.nentity - poffsets.wingmap + 0x36D0,24,cworld[r][2])
+          end
+           setadd(pbase + poffsets.ewing,gg.TYPE_DWORD,1973407668,false)
+           gg.toast('你需要先到该图')
+         end
+      	end
+      	if x == 4 then 
       	   y={}
       	   if eoffsets.world == 0x00 then
       	      gg.clearResults()
@@ -2828,15 +2856,15 @@ function domenu()
           gg.setVisible(false)
          end
       	end
-      	if x == 4 then
+      	if x == 5 then
       	  getpos()
       	  gg.setVisible(false)
       	end
-        if x == 5 then 
+        if x == 6 then 
           setposit(px, py, pz) 
           gg.setVisible(false)
         end
-        if x == 6 then 
+        if x == 7 then 
           usp = gg.prompt({"Coord X", "Coord Y", "Coord Z"}, {[1]= getadd(pbase+poffsets.positX,gg.TYPE_FLOAT),[2]= getadd(pbase+poffsets.positY,gg.TYPE_FLOAT),[3]= getadd(pbase+poffsets.positZ,gg.TYPE_FLOAT)}, {[1]="number",[1]="number",[1]="number"})
           if usp[1] == nil then
             usp[1] = getadd(pbase+poffsets.positX,gg.TYPE_FLOAT)
@@ -2850,18 +2878,18 @@ function domenu()
           setposit(usp[1],usp[2],usp[3])
           gg.setVisible(false)
         end
-      if x == 7 then
+      if x == 8 then
         gg.setVisible(false)
         viscandle(true)
       end
-      if x == 8 then
+      if x == 9 then
         gg.setVisible(false)
         viscandle(false)
       end
-      if x == 9 then
+      if x == 10 then
           noclip()
       end
-      if x == 10 then
+      if x == 11 then
           if getadd(eoffsets.cloud,gg.TYPE_DWORD) == 1 then
             setadd(eoffsets.cloud,gg.TYPE_DWORD,0,false)
             else
@@ -2869,27 +2897,27 @@ function domenu()
           end
           gg.setVisible(false)
       end
-      if x == 11 then
+      if x == 12 then
         setposit(getadd(pbase + poffsets.positX,gg.TYPE_FLOAT), getadd(pbase + poffsets.positY,gg.TYPE_FLOAT) + psettings.warpdis, getadd(pbase + poffsets.positZ,gg.TYPE_FLOAT))
           gg.setVisible(false)
       end
-      if x == 12 then
+      if x == 13 then
         setposit(getadd(pbase + poffsets.positX,gg.TYPE_FLOAT), getadd(pbase + poffsets.positY,gg.TYPE_FLOAT) - psettings.warpdis, getadd(pbase + poffsets.positZ,gg.TYPE_FLOAT))
           gg.setVisible(false)
       end
-      if x == 13 then
+      if x == 14 then
         gg.setVisible(false)
         collectcrab(1)
       end
-      if x == 14 then
+      if x == 15 then
         gg.setVisible(false)
         collectcrab(0)
       end
-      if x == 15 then
+      if x == 16 then
           psettings.warpdis = inputnum(6)
           --savedata()
       end
-      if x == 16 then
+      if x == 17 then
           k=gg.choice({
         '取消'
       	,'叫'
@@ -2904,7 +2932,7 @@ function domenu()
           if k == 3 then mev = 2 end
           if k == 4 then mev = 3 end
         end
-      if x == 17 then
+      if x == 18 then
           nnn = '{\"' .. getmap() .. '\",  {'
           for i = 0, 6 do
             nnn = nnn .. getadd(eoffsets.nworld + (i * 4),4) .. '; '
@@ -3889,7 +3917,3 @@ while true do
   end
    gg.sleep(100)
 end
-
---5A64
-
---h 00 00 34 43 00 60 6A 46
