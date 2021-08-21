@@ -3230,7 +3230,7 @@ function domenu()
            '升级所有动作'
            ,'更改特殊动作'
            ,'更改所有动作'
-         },nil,'')
+         },nil,'此功能已失效')
        if x == 1 then
          gg.setVisible(false)
          upemote()
