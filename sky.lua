@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.20"
+ddd = "脚本更新时间21.08.21"
 pshare = ''
 umenu = true
 fasthome = true
@@ -2030,6 +2030,44 @@ function candlefarm(aa,bb)
   gg.removeListItems(flowers)
 end
 
+function doorpeek(boo)
+  dpoint = eoffsets.nentity - poffsets.mportal
+  vf = {}
+  if boo then
+    gg.setVisible(false)
+    for i = 0, 15 do
+      if getadd(dpoint + (0xE0 * i) - 0x4,gg.TYPE_DWORD) == 0 then
+      break;
+      end
+      for y = 1,13 do
+        table.insert(vf,{address=dpoint+(0xE0*i)-(0x4*y),flags=gg.TYPE_DWORD,value=0})
+      end
+      gg.setValues(vf)
+      nowind()
+    end
+
+    return;
+  end
+  vf = {}
+  mf = {}
+  for i = 0, 15 do
+    if getadd(dpoint + (0xE0 * i) - 0x4,gg.TYPE_DWORD) == 0 then
+      break;
+    end
+    if getadd(dpoint + (0xE0 * i),gg.TYPE_DWORD) == 1 then
+      if getadd(dpoint + (0xE0 * i) - 0x34,gg.TYPE_DWORD) == 49 then
+        table.insert(vf,addtostr(getadd(dpoint + (0xE0 * i) - 0x34 + 0x10,gg.TYPE_QWORD),24))
+        else
+        table.insert(vf,addtostr(dpoint + (0xE0 * i) - 0x33,24))
+      end
+      table.insert(mf,{x=getadd(dpoint + (0xE0 * i) - 0x74,gg.TYPE_FLOAT),y=getadd(dpoint + (0xE0 * i) - 0x74+0x4,gg.TYPE_FLOAT),z=getadd(dpoint + (0xE0 * i) - 0x74+0x8,gg.TYPE_FLOAT)})
+    end
+  end 
+  hf = gg.choice(vf,nil,'')
+  if hf == nil then return; end
+  setposit(mf[hf].x,mf[hf].y,mf[hf].z)
+end
+
 function getmagics()
   gg.toast('扫描...')
   xcv = pbase - poffsets.fullmagic
@@ -2779,6 +2817,7 @@ function domenu()
       	,'⏬向下'
       	,'☢捕蟹'
       	,'🍴移蟹'
+      	,'🚪移除地图更改/限制'
       	,'设置向上/向下距离'
       	,'设置向前热键'
       	},nil,getmap())
@@ -2923,10 +2962,13 @@ function domenu()
         collectcrab(0)
       end
       if x == 16 then
+        doorpeek(true)
+      end
+      if x == 17 then
           psettings.warpdis = inputnum(6)
           --savedata()
       end
-      if x == 17 then
+      if x == 18 then
           k=gg.choice({
         '取消'
       	,'叫'
@@ -3483,7 +3525,7 @@ function domenu()
         scsettings()
       end
       if m == 15 then
-        x=gg.choice({'搜索 1D','打印偏移量','打印动作','打印项目','打印魔术','打印 daily','frags','拿螃蟹','扔螃蟹','撞冥龙','执行','加载坐标'
+        x=gg.choice({'搜索 1D','打印偏移量','打印动作','打印项目','打印魔术','打印 daily','frags','拿螃蟹','扔螃蟹','撞冥龙','执行','加载坐标','门'
         },nil,'⚠️这种功能是不稳定的')
         if x == 1 then
           xgd = gg.getResults(gg.getResultsCount())
@@ -3533,6 +3575,10 @@ function domenu()
           local fld,lrf = pcall(load('table.insert(posits,' ..replace(inputstr(),'$$',',') .. ')'))
           if not fld then gg.toast(lrf) end
         end
+        if x == 13 then
+          doorpeek(false)
+        end
+
       end
         --absflower()
       
