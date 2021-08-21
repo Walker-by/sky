@@ -2811,6 +2811,7 @@ function domenu()
            setadd(xre+0x4,gg.TYPE_DWORD,0,false)
            setadd(xre+0x8,gg.TYPE_DWORD,28,false)
            setadd(xre+0xC,gg.TYPE_DWORD,0,false)
+           --use pointer to not crash game
            setadd(xre+0x10,gg.TYPE_QWORD,eoffsets.nentity - poffsets.wingmap + 0x36D0,false)
            if r == #y then
             setstr(eoffsets.nentity - poffsets.wingmap + 0x36D0,24,'ExMachina')
