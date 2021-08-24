@@ -549,21 +549,21 @@ crlist = {
 }
 
 imgs = {
-  'Clear',
-  'Black',
-  'White',
-  'Blue',
-  'Brown',
-  'Cyan',
-  'Gray',
-  'Green',
-  'Lime',
-  'Magenta',
-  'Orange',
-  'Red',
-  'Yellow',
-  'TiktokLogo',
-  'UIEye',
+  '清除',
+  '黑色',
+  '白色',
+  '蓝色',
+  '棕色',
+  '青色',
+  '灰色',
+  '绿色',
+  '石灰',
+  '洋红',
+  '橙色',
+  '红色',
+  '黄色',
+  '抖音Logo',
+  'UI眼睛',
   ''
 }
 
