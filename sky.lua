@@ -806,7 +806,7 @@ if gg.getResultsCount() ~= 0 then
   eoffsets.sspeed = mm[1].address
   eoffsets.cspeed = mm[1].address - 0x33CE4
   eoffsets.cloud = mm[1].address - 0x33CE8
-  eoffsets.glight = mm[1].address - 0x1BDBC
+  eoffsets.glight = mm[1].address - 0x1C134
   eoffsets.wforce = mm[1].address + 0x530
   eoffsets.jforce = mm[1].address + 0x638
 end
