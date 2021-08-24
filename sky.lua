@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.23"
+ddd = "脚本更新时间21.08.24"
 pshare = ''
 umenu = true
 fasthome = true
@@ -30,7 +30,8 @@ psettings = {
   smwrdelay = 1000,
   portaldef = false,
   fhspeed = 100,
-  cmimage = 1
+  cmimage = 1,
+  aeleven = false
   }
   
 scriptv = {process ='com.tgc.sky.android',version=175117}
@@ -101,7 +102,8 @@ poffsets = {
   uihook = 0x94143C,
   shoutscale = 0x255A8,
   daily = 0x1303A24,
-  wingmap = 0x12CE41C
+  wingmap = 0x12CE41C,
+  enode = 0x1397DC0
   }
 
 allmagics = {}
@@ -707,6 +709,9 @@ function loadsave()
     if psettings.cmimage == nil then
       psettings.cmimage = 1
     end
+    if psettings.aeleven == nil then
+      psettings.aeleven = false
+    end
   end
 end
 
@@ -1042,6 +1047,7 @@ eoffsets.ncamera = eoffsets.nentity - poffsets.gcamera
 gg.clearResults()
 if andro >= 30 then
     gg.toast('\n不劳无获\n' .. ddd .. ' [A11] by 行者')
+    print('检测到Android 11')
   else
     gg.toast('\n不劳无获\n' .. ddd .. ' by 行者')
 end
@@ -1155,14 +1161,14 @@ function getcoord(boo)
 end
 
 function ggrange(vr)
-  if andro < 30 then
-    gg.setRanges(vr)
-  else
+  if psettings.aeleven then
     if vr ~= gg.REGION_CODE_APP then
       gg.setRanges(gg.REGION_OTHER)
     else
       gg.setRanges(vr)
     end
+  else
+    gg.setRanges(vr)
   end
   --gg.setRanges(vr)
 end
@@ -2521,7 +2527,8 @@ function hookui()
 end
 
 function getfriendnode()
-  if eoffsets.gnode == 0x00 then
+  if #nodes < 3 then
+    --[[
     gg.clearResults()
     ggrange(4)
     gg.setVisible(false)
@@ -2542,6 +2549,18 @@ function getfriendnode()
       --print(nodes)
     end
     gg.clearResults()
+    ]]--
+
+    eoffsets.gnode=eoffsets.nentity - poffsets.enode
+    for i = 0, 39 do
+      nn = eoffsets.gnode + (0x2E0 * i)
+      mm = nn - 0x18
+      ww = mm - 0x14
+      yy = addtostr(nn - 0x4,20)
+      if string.find(yy,'accept_') then
+        table.insert(nodes,{yy,mm,getadd(mm,gg.TYPE_DWORD),getadd(ww,gg.TYPE_DWORD)})
+      end
+    end
   end
   
 end
@@ -2704,7 +2723,8 @@ function scsettings()
     '手动收集翼时间: ' .. psettings.smwrdelay .. 'ms',
     '使用传统地图转换器 : ' .. boolling(psettings.portaldef),
     '快速回遇镜速度: ' .. psettings.fhspeed,
-    '更改地图图像 : ' .. imgs[psettings.cmimage]
+    '更改地图图像 : ' .. imgs[psettings.cmimage],
+    '安卓11（测试）: ' .. boolling(psettings.aeleven)
   },nil,'')
   if xcs == nil then return; end
   if xcs == 1 then
@@ -2754,6 +2774,9 @@ function scsettings()
     if gh ~= nil then
       psettings.cmimage = gh
     end
+  end
+  if xcs == 16 then
+    psettings.aeleven = toggle(psettings.aeleven)
   end
   savedata()
   scsettings()
