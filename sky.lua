@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.21"
+ddd = "脚本更新时间21.08.22"
 pshare = ''
 umenu = true
 fasthome = true
@@ -2263,14 +2263,14 @@ function collectcrab(uy)
   mpoint = getcoord(true)
   if uy == 0 then
     for i=0,50 do
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
-    --eposit = {getadd(rpoint + (0x640*i),gg.TYPE_FLOAT),getadd(rpoint + (0x640*i)+0x4,gg.TYPE_FLOAT),getadd(rpoint + (0x640*i)+0x8,gg.TYPE_FLOAT)}
-    table.insert(eval,{address=rpoint + (0x640*i),flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='crabX'})
-    table.insert(eval,{address=rpoint + (0x640*i)+0x4,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='crabY'})
-    table.insert(eval,{address=rpoint + (0x640*i)+0x8,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='crabZ'})
+    --eposit = {getadd(rpoint + (0xC80*i),gg.TYPE_FLOAT),getadd(rpoint + (0xC80*i)+0x4,gg.TYPE_FLOAT),getadd(rpoint + (0xC80*i)+0x8,gg.TYPE_FLOAT)}
+    table.insert(eval,{address=rpoint + (0xC80*i),flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='crabX'})
+    table.insert(eval,{address=rpoint + (0xC80*i)+0x4,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='crabY'})
+    table.insert(eval,{address=rpoint + (0xC80*i)+0x8,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='crabZ'})
     end
 if #eval == 0 then return; end
   --gg.setValues(eval)
@@ -2285,55 +2285,55 @@ if #eval == 0 then return; end
   end
   if uy == 1 then
     for i=0,50 do
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
     --setadd(pbase + poffsets.pcrabs,gg.TYPE_QWORD,rpoint-0x38,false)
-    setadd(rpoint + (0x640*i)+0x5AC,gg.TYPE_DWORD,41249,false)
-    setadd(rpoint + (0x640*i)+0x5AC-0x4,gg.TYPE_DWORD,41249,false)
+    setadd(rpoint + (0xC80*i)+0xC80,gg.TYPE_DWORD,41249,false)
+    setadd(rpoint + (0xC80*i)+0x5AC-0x4,gg.TYPE_DWORD,41249,false)
     end
     for i=0,50 do
       
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
     --setadd(pbase + poffsets.pcrabs,gg.TYPE_QWORD,0,false)
-    setadd(rpoint + (0x640*i)+0x5AC,gg.TYPE_DWORD,0,false)
+    setadd(rpoint + (0xC80*i)+0x5AC,gg.TYPE_DWORD,0,false)
     end
     return;
   end
   if uy == 2 then
     for i=0,50 do
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
     
-    setadd(rpoint + (0x640*i)+0x5AC,gg.TYPE_DWORD,41249,true)
-    setadd(rpoint + (0x640*i)+0x5AC-0x4,gg.TYPE_DWORD,41249,false)
+    setadd(rpoint + (0xC80*i)+0x5AC,gg.TYPE_DWORD,41249,true)
+    setadd(rpoint + (0xC80*i)+0x5AC-0x4,gg.TYPE_DWORD,41249,false)
     gg.sleep(200)
-    setadd(rpoint + (0x640*i)+0x5AC,gg.TYPE_DWORD,0,false)
-    setadd(rpoint + (0x640*i)+0x5AC-0x4,gg.TYPE_DWORD,41249,false)
+    setadd(rpoint + (0xC80*i)+0x5AC,gg.TYPE_DWORD,0,false)
+    setadd(rpoint + (0xC80*i)+0x5AC-0x4,gg.TYPE_DWORD,41249,false)
     end
   end
   if uy == 3 then
     for i=0,50 do
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
-    setadd(rpoint + (0x640*i)+0x5AC,gg.TYPE_DWORD,41249,false)
+    setadd(rpoint + (0xC80*i)+0x5AC,gg.TYPE_DWORD,41249,false)
     end
   end
   if uy == 4 then
     for i=0,50 do
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
-    setadd(rpoint + (0x640*i)+0x5AC,gg.TYPE_DWORD,0,false)
+    setadd(rpoint + (0xC80*i)+0x5AC,gg.TYPE_DWORD,0,false)
     end
   end
 end
@@ -2345,14 +2345,14 @@ function collectkrill(uy)
   mpoint = getcoord(true)
   if uy == 0 then
     for i=0,50 do
-    evalid = getadd(rpoint + (0x640*i)+0x30,gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i)+0x30,gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
-    --eposit = {getadd(rpoint + (0x640*i),gg.TYPE_FLOAT),getadd(rpoint + (0x640*i)+0x4,gg.TYPE_FLOAT),getadd(rpoint + (0x640*i)+0x8,gg.TYPE_FLOAT)}
-    table.insert(eval,{address=rpoint + (0x640*i),flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='krillX'})
-    table.insert(eval,{address=rpoint + (0x640*i)+0x4,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='krillY'})
-    table.insert(eval,{address=rpoint + (0x640*i)+0x8,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='krillZ'})
+    --eposit = {getadd(rpoint + (0xC80*i),gg.TYPE_FLOAT),getadd(rpoint + (0xC80*i)+0x4,gg.TYPE_FLOAT),getadd(rpoint + (0xC80*i)+0x8,gg.TYPE_FLOAT)}
+    table.insert(eval,{address=rpoint + (0xC80*i),flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='krillX'})
+    table.insert(eval,{address=rpoint + (0xC80*i)+0x4,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='krillY'})
+    table.insert(eval,{address=rpoint + (0xC80*i)+0x8,flags=gg.TYPE_FLOAT,value=-999,freeze=true,name='krillZ'})
     end
 if #eval == 0 then return; end
   --gg.setValues(eval)
@@ -2368,13 +2368,13 @@ if #eval == 0 then return; end
   if uy == 1 then
     for i=0,50 do
     --detec : 1D0
-    evalid = getadd(rpoint + (0x640*i),gg.TYPE_FLOAT)
+    evalid = getadd(rpoint + (0xC80*i),gg.TYPE_FLOAT)
     if evalid == 0 then
       break
     end
-      table.insert(eval,{address=rpoint + (0x640*i),flags=gg.TYPE_FLOAT,value=mpoint[1]})
-      table.insert(eval,{address=rpoint + (0x640*i)+0x4,flags=gg.TYPE_FLOAT,value=mpoint[2]})
-      table.insert(eval,{address=rpoint + (0x640*i)+0x8,flags=gg.TYPE_FLOAT,value=mpoint[3]})
+      table.insert(eval,{address=rpoint + (0xC80*i),flags=gg.TYPE_FLOAT,value=mpoint[1]})
+      table.insert(eval,{address=rpoint + (0xC80*i)+0x4,flags=gg.TYPE_FLOAT,value=mpoint[2]})
+      table.insert(eval,{address=rpoint + (0xC80*i)+0x8,flags=gg.TYPE_FLOAT,value=mpoint[3]})
     end
     gg.setValues(eval)
     return;
