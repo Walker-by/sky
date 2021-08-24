@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.22"
+ddd = "脚本更新时间21.08.23"
 pshare = ''
 umenu = true
 fasthome = true
@@ -29,7 +29,8 @@ psettings = {
   smcrdelay = 1000,
   smwrdelay = 1000,
   portaldef = false,
-  fhspeed = 100
+  fhspeed = 100,
+  cmimage = 1
   }
   
 scriptv = {process ='com.tgc.sky.android',version=175117}
@@ -59,6 +60,7 @@ poffsets = {
   ptonentity = 0xC8936C,
   ptonworld = 0x63BD0C,
   ptofps = 0x562E480,
+  ptocwings = 0x1767BD0,
   wlevel = 0x22400,
   positX = 0x1C968,
   positY = 0x1C96C,
@@ -297,9 +299,10 @@ cworld = {
     {"[禁阁]到高层", 'Night2'},
     {"[禁阁]地下", 'NightArchive'},
     {"[新季节]王子沙漠", 'NightDesert'},
-    {"[新季节]王子星球", 'NightDesert_Planets'},
     {"[新季节]水母沙滩", 'NightDesert_Beach'},
     {"[新季节]罐子洞", 'Night_JarCave'},
+    {"[新季节]无限沙漠", 'Night_InfiniteDesert'},
+    {"[新季节]王子星球", 'NightDesert_Planets'},
     {"办公室", 'TGCOffice'},
     {"伊甸园1", 'StormStart'},
     {"伊甸园2", 'Storm'},
@@ -543,6 +546,25 @@ posits = {
 crlist = {
 }
 
+imgs = {
+  'Clear',
+  'Black',
+  'White',
+  'Blue',
+  'Brown',
+  'Cyan',
+  'Gray',
+  'Green',
+  'Lime',
+  'Magenta',
+  'Orange',
+  'Red',
+  'Yellow',
+  'TiktokLogo',
+  'UIEye',
+  ''
+}
+
 mlist = {}
 
 hitarr = {
@@ -682,6 +704,9 @@ function loadsave()
     if psettings.fhspeed == nil then
       psettings.fhspeed = 100
     end
+    if psettings.cmimage == nil then
+      psettings.cmimage = 1
+    end
   end
 end
 
@@ -797,6 +822,13 @@ function startup()
   nn = '玩家 : ' .. tostring(itoh(pbase)) .. ' ' .. getadd(pbase,gg.TYPE_DWORD) .. 'D'
   print(nn)
   gg.clearResults()
+  eoffsets.sspeed = getadd(rbootloader+poffsets.ptocwings,gg.TYPE_QWORD)
+  eoffsets.cspeed = eoffsets.sspeed - 0x33CE4
+  eoffsets.cloud = eoffsets.sspeed - 0x33CE8
+  eoffsets.glight = eoffsets.sspeed - 0x1C134
+  eoffsets.wforce = eoffsets.sspeed + 0x530
+  eoffsets.jforce = eoffsets.sspeed + 0x638
+  --[[
   ggrange(gg.REGION_C_DATA)
 gg.searchNumber("3.5", gg.TYPE_FLOAT)
 mm = {}
@@ -878,7 +910,7 @@ for sn4, sn5 in ipairs(mm) do
   eoffsets.gravity = sn5.address
 end
 --gg.addListItems(nn)
-
+]]--
 mm = {}
 nn = {}
 ggrange(gg.REGION_C_ALLOC)
@@ -1008,7 +1040,11 @@ eoffsets.ncamera = eoffsets.nentity - poffsets.gcamera
 
 --gg.addListItems(candles)
 gg.clearResults()
-gg.toast('\n不劳无获\n' .. ddd .. ' by 行者')
+if andro >= 30 then
+    gg.toast('\n不劳无获\n' .. ddd .. ' [A11] by 行者')
+  else
+    gg.toast('\n不劳无获\n' .. ddd .. ' by 行者')
+end
   
 if psettings.nodamage then
   setadd(pbase + poffsets.pdamage,gg.TYPE_DWORD,0,true)
@@ -1120,11 +1156,15 @@ end
 
 function ggrange(vr)
   if andro < 30 then
-    --gg.setRanges(vr)
+    gg.setRanges(vr)
+  else
+    if vr ~= gg.REGION_CODE_APP then
+      gg.setRanges(gg.REGION_OTHER)
     else
-    --gg.setRanges(REGION_OTHER)
+      gg.setRanges(vr)
+    end
   end
-  gg.setRanges(vr)
+  --gg.setRanges(vr)
 end
 
 function echange(boo)
@@ -1133,22 +1173,22 @@ function echange(boo)
   if boo then
   for i,v in ipairs(emotelist) do
     if v[5] == 2089048596 then
-      setadd(v[4]+0xD7,gg.TYPE_DWORD,1251050323,false)
-      setstr(v[4]+0x60,24,'UiSocialPlayfight')
+      setadd(v[4]+0xD7-0x10,gg.TYPE_DWORD,1251050323,false)
+      --setstr(v[4]+0x60,24,'UiSocialPlayfight')
       hitarr[1] = v[4]
     end
     if v[5] == -1968658055 then
-      setadd(v[4]+0xD7,gg.TYPE_DWORD,145501185,false)
-      setstr(v[4]+0x60,24,'UiEmoteSocialBearHug')
+      setadd(v[4]+0xD7-0x10,gg.TYPE_DWORD,145501185,false)
+      --setstr(v[4]+0x60,24,'UiEmoteSocialBearHug')
       hitarr[2] = v[4]
     end
   end
   else
-    setadd(hitarr[1]+0xD7,gg.TYPE_DWORD,2089048596,false)
-    setstr(hitarr[1]+0x60,24,'UiEmoteAP10Bubbles')
+    setadd(hitarr[1]+0xD7-0x10,gg.TYPE_DWORD,2089048596,false)
+    --setstr(hitarr[1]+0x60,24,'UiEmoteAP10Bubbles')
       
-    setadd(hitarr[2]+0xD7,gg.TYPE_DWORD,-1968658055,false)
-    setstr(hitarr[2]+0x60,24,'UiEmoteAP08DeepBreath')
+    setadd(hitarr[2]+0xD7-0x10,gg.TYPE_DWORD,-1968658055,false)
+    --setstr(hitarr[2]+0x60,24,'UiEmoteAP08DeepBreath')
   end
 end
 
@@ -1369,7 +1409,8 @@ function portal(str)
   xtr = eoffsets.nentity - poffsets.mportal
   mgc = getcoord(true)
   setstr(xtr + 0x36D0,24,str)
-  setstr(xtr - 0x1B,8,'Clear')
+  setstr(xtr + 0x36F0,28,imgs[psettings.cmimage])
+
   setadd(xtr + 0x372C,gg.TYPE_DWORD,string.len(str),false)
   xar = {
     --{address = xtr + 0x372C,flags=gg.TYPE_DWORD,value=11},
@@ -1381,6 +1422,11 @@ function portal(str)
     {address = xtr - 0x2C,flags=gg.TYPE_DWORD,value=28},
     {address = xtr - 0x24,flags=gg.TYPE_QWORD,value=xtr + 0x36D0},
     {address = xtr + 0x372C,flags = gg.TYPE_DWORD,value = string.len(str)},
+    {address = xtr - 0x1C,flags=gg.TYPE_DWORD,value=49},
+    {address = xtr - 0x18,flags=gg.TYPE_DWORD,value=0},
+    {address = xtr - 0x14,flags=gg.TYPE_DWORD,value=10},
+    {address = xtr - 0x10,flags=gg.TYPE_DWORD,value=0},
+    {address = xtr - 0xC,flags=gg.TYPE_QWORD,value=xtr+0x36F0},
     --{address = xtr - 0x74,flags = gg.TYPE_FLOAT,value = mgc[1]},
     --{address = xtr - 0x74 + 0x4,flags = gg.TYPE_FLOAT,value = mgc[2]},
     --{address = xtr - 0x74 + 0x8,flags = gg.TYPE_FLOAT,value = mgc[3]},
@@ -2658,6 +2704,7 @@ function scsettings()
     '手动收集翼时间: ' .. psettings.smwrdelay .. 'ms',
     '使用传统地图转换器 : ' .. boolling(psettings.portaldef),
     '快速回遇镜速度: ' .. psettings.fhspeed,
+    '更改地图图像 : ' .. imgs[psettings.cmimage]
   },nil,'')
   if xcs == nil then return; end
   if xcs == 1 then
@@ -2701,6 +2748,12 @@ function scsettings()
   end
   if xcs == 14 then
     psettings.fhspeed = inputnum(100)
+  end
+  if xcs == 15 then
+    gh = gg.choice(imgs,nil,'')
+    if gh ~= nil then
+      psettings.cmimage = gh
+    end
   end
   savedata()
   scsettings()
@@ -3384,10 +3437,10 @@ function domenu()
             candlefarm(31,37)
           end
           if y == 7 then
-            candlefarm(38,45)
+            candlefarm(38,44)
           end
           if y == 8 then
-            candlefarm(46,47)
+            candlefarm(47,48)
           end
        end
        if x == 3 then
