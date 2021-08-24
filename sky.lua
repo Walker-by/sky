@@ -59,7 +59,7 @@ poffsets = {
   ptopbase = 0x3DB2D8,
   ptonentity = 0xC8936C,
   ptonworld = 0x63BD0C,
-  ptofps = 0x562E480,
+  ptofps = 0x17D6648,
   ptocwings = 0x1767BD0,
   wlevel = 0x22400,
   positX = 0x1C968,
@@ -2903,6 +2903,7 @@ function domenu()
         table.insert(y,'⚠️游戏崩溃')
          r=gg.choice(y,nil,'快速回遇镜功能将被禁用！')
          if (r ~= nil) then 
+           gg.setVisible(false)
            if psettings.fhspeed > 1 then
             fasthome = false
            end
@@ -3094,7 +3095,7 @@ function domenu()
         end
         if x == 8 then 
           if eoffsets.gframe == 0x00 then
-            eoffsets.gframe = getadd(eoffsets.nentity + poffsets.ptofps,gg.TYPE_QWORD) + 0x160
+            eoffsets.gframe = getadd(rbootloader + poffsets.ptofps,gg.TYPE_QWORD) + 0x160
           end
           setadd(eoffsets.gframe,gg.TYPE_FLOAT,inputnum(30),false)
           
