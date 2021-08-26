@@ -11,6 +11,7 @@ umenu = true
 fasthome = true
 fastvalue = false
 echanged = false
+teleping = false
 fastmax = 0
 crset = {enable = false, level = 0, map = ''}
 wrset = {enable = false, level = 0, map = ''}
@@ -1061,6 +1062,8 @@ if psettings.nodamage then
 end
 if psettings.fasthome then
   fasthome = true
+  else
+  fasthome = false
 end
 eoffsets.gframe = getadd(rbootloader + poffsets.ptofps,gg.TYPE_QWORD) + 0x160
 setadd(eoffsets.gframe,gg.TYPE_FLOAT,psettings.ufps,false)
@@ -1746,7 +1749,9 @@ function dorace()
 end
 
 function espam()
-  if mslot[1] == 'none' then return; end
+  if getadd(pbase + (poffsets.magic + 0x30),gg.TYPE_DWORD) == 0 then 
+    pmagic(1,1750685908,0)
+  end
   adr = pbase + poffsets.magic + 0x28
   --gg.toast(tostring(isfreeze(adr)))
   if isfreeze(adr) then
@@ -2527,6 +2532,7 @@ function hookui()
       setadd(vtarget - 0xC208 + 0x30,gg.TYPE_DWORD,0,true)
     end
   end
+  ThisScriptMadeBy = '行者'
   if cgh == 9 then
     huiset = false
     domenu()
@@ -2938,8 +2944,10 @@ function domenu()
          r=gg.choice(y,nil,'快速回遇镜功能将被禁用！')
          if (r ~= nil) then 
            gg.setVisible(false)
-           if psettings.fhspeed > 1 then
+           if psettings.fhspeed > 1 and fasthome and not teleping then
             fasthome = false
+            teleping = true
+            gg.toast('快速回遇镜关闭')
            end
            xre = eoffsets.nentity - poffsets.wingmap
            setadd(xre,gg.TYPE_QWORD,49,false)
@@ -2954,8 +2962,8 @@ function domenu()
             setstr(eoffsets.nentity - poffsets.wingmap + 0x36D0,24,cworld[r][2])
           end
            setadd(pbase + poffsets.ewing,gg.TYPE_DWORD,1973407668,false)
-           gg.toast('你需要先到该图')
          end
+         WhyYouRemoveThisLine = 'by ExMachina'
       	end
       	if x == 4 then 
       	   y={}
@@ -4043,6 +4051,11 @@ while true do
     end
   end
   if gg.isVisible(true) then
+    if teleping then
+      gg.toast('快速回遇镜启用')
+      teleping = false
+      fasthome = true
+    end
     if umenu and psettings.showmenu then
       umenu = false
       if crset.enable then
