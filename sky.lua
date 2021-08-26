@@ -2738,6 +2738,7 @@ function scsettings()
     '使用传统地图转换器 : ' .. boolling(psettings.portaldef),
     '快速回遇镜速度: ' .. psettings.fhspeed,
     '更改地图图像 : ' .. imgs[psettings.cmimage],
+    '安卓11（测试）: ' .. boolling(psettings.aeleven),
     'Fps : ' .. psettings.ufps
   },nil,'')
   if xcs == nil then return; end
