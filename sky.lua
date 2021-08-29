@@ -3268,6 +3268,9 @@ function domenu()
         if x == 13 then
           setadd(eoffsets.glight,gg.TYPE_FLOAT,inputnum(1),false)
         end
+        if x == 14 then
+          setadd(eoffsets.wlight,gg.TYPE_FLOAT,inputnum(1),false)
+        end
         
       end
         
