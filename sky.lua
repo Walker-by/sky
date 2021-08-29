@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.25"
+ddd = "脚本更新时间21.08.28"
 pshare = ''
 umenu = true
 fasthome = true
@@ -15,6 +15,7 @@ teleping = false
 fastmax = 0
 crset = {enable = false, level = 0, map = ''}
 wrset = {enable = false, level = 0, map = ''}
+spinset = {enable = false, rot = 0, val = 0, lby = true, speed = 20}
 huiset = false
 psettings = {
   crspeed=3,
@@ -83,7 +84,7 @@ poffsets = {
   pdamage = 0x2245C,
   wwings = 0x4E066C,
   wobjs = 0x8F88A4,
-  wbtns = 0x91E178,
+  wbtns = 0x992348,
   gohome = 0x23C18,
   elist = 0x138BD73,
   gspeed = 0x156150C,
@@ -97,7 +98,7 @@ poffsets = {
   mcandles = 0x266F8,
   sglow = 0x21D00,
   wwind = 0x9DC4BC,
-  pwalk = 0x2D9FAE8,
+  pwalk = 0x122DA7C,
   cfrags = 0x91ABD0,
   gcamera = 0xF9086C,
   ecrabs = 0x5A49CC,
@@ -3225,6 +3226,7 @@ function domenu()
            ,'🦀扔螃蟹'
            ,'📢超级呐喊'
            ,'🎤锁定叫声音阶'
+           ,'🔃旋转机器人'
          },nil,'')
        if x == nil then
          x = 0
@@ -3360,6 +3362,9 @@ function domenu()
             setadd(adr,gg.TYPE_FLOAT,5,true)
             gg.toast('打开')
           end
+        end
+        if x == 14 then
+          spinmenu()
         end
       end
       
@@ -3920,6 +3925,37 @@ function wrmenu()
   end
 end
 
+function spinmenu()
+  gg.setVisible(false)
+  if spinset.enable then
+    spinset.enable = false
+    setadd(spad,gg.TYPE_DWORD,0,false)
+    setadd(eoffsets.nentity - poffsets.pwalk - 0x90,gg.TYPE_FLOAT,0,false)
+    setadd(eoffsets.nentity - poffsets.pwalk - 0x88,gg.TYPE_FLOAT,0,false)
+    gg.toast('关闭')
+    return;
+  end
+
+  spnf = gg.choice({'快速旋转','月球漫步','前进锁定','随机的','幽灵漫步 : ' .. boolling(spinset.lby),'Spin speed'},nil,'')
+  if spnf == nil then
+    return;
+  end
+  if spnf == 5 then
+    spinset.lby = toggle(spinset.lby)
+    spinmenu()
+    return;
+  end
+  if spnf == 6 then
+    spinset.speed = inputnum(20)
+    spinmenu()
+    return;
+  end
+  spad = eoffsets.nentity - poffsets.pwalk
+  spinset.enable = true
+  spinset.val = spnf
+  setadd(spad,gg.TYPE_DWORD,0,spinset.lby)
+end
+
 function telemenu()
   xh = gg.choice({
     '选择其他',
@@ -3954,6 +3990,29 @@ function telemenu()
     
     return;
   end
+end
+
+function spinloop()
+  if not spinset.enable then
+    return;
+  end
+  if spinset.val == 1 then
+    if spinset.rot > 360 then
+      spinset.rot = 0
+    end
+    spinset.rot = spinset.rot + spinset.speed
+  end
+  if spinset.val == 2 then
+    spinset.rot = getadd(eoffsets.ncamera,gg.TYPE_FLOAT)*180/math.pi+180
+  end
+  if spinset.val == 3 then
+    spinset.rot = getadd(eoffsets.ncamera,gg.TYPE_FLOAT)*180/math.pi
+  end
+  if spinset.val == 4 then
+    spinset.rot = math.random(0,360)
+  end
+  setadd(eoffsets.nentity - poffsets.pwalk - 0x90,gg.TYPE_FLOAT,math.sin(spinset.rot*math.pi/180),true)
+  setadd(eoffsets.nentity - poffsets.pwalk - 0x88,gg.TYPE_FLOAT,math.cos(spinset.rot*math.pi/180),true)
 end
 
 function teleloop()
@@ -4022,6 +4081,9 @@ while true do
   end
   if fasthome and teleparr.enable == false then
     htrigger()
+  end
+  if spinset.enable then
+    spinloop()
   end
   if resettick > -1 then
     resettick = resettick - 1 
