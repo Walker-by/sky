@@ -5,7 +5,7 @@
 
 
 gg.toast('加载中')
-ddd = "脚本更新时间21.08.28"
+ddd = "脚本更新时间21.08.30"
 pshare = ''
 umenu = true
 fasthome = true
@@ -263,8 +263,7 @@ windwallset = {
     {"NightDesert", 4756517339743666084},
     {"NightDesert", 4689256204097823239}
 }
---wip
---coord, magic id, map id, props id leaked from mom0 script by Kel
+
 cworld = {
    {"[遇镜]遇镜", 'CandleSpace'},
    {"[晨岛]开始", 'Dawn'},
@@ -1383,6 +1382,21 @@ function absorb()
   gg.clearResults()
 end
 
+function absspirits()
+  ExMach = 0xFCD0
+  xde = {}
+  mpos = getcoord(true)
+  for i = 0, 40 do
+    xda = pbase + 0xAB438 + (i * ExMach)
+    if getadd(xda-0x18,gg.TYPE_DWORD) ~= 0 and getadd(xda,gg.TYPE_FLOAT) ~= 0 then
+      table.insert(xde,{address=xda,flags=gg.TYPE_FLOAT,value=mpos[1],freeze=true})
+      table.insert(xde,{address=xda+(0x4),flags=gg.TYPE_FLOAT,value=mpos[2],freeze=true})
+      table.insert(xde,{address=xda+(0x8),flags=gg.TYPE_FLOAT,value=mpos[3],freeze=true})
+      end
+  end
+  gg.setValues(xde)
+end
+
 function portallegacy(str)
   if eoffsets.world == 0x00 then
     gg.clearResults()
@@ -2493,6 +2507,9 @@ if #eval == 0 then return; end
     end
     return;
   end
+  if uy == 5 then
+    setposit(getadd(rpoint,gg.TYPE_FLOAT),getadd(rpoint+0x4,gg.TYPE_FLOAT),getadd(rpoint+0x8,gg.TYPE_FLOAT))
+  end
 end
 
 function fkelders()
@@ -3110,7 +3127,7 @@ function domenu()
 
       end
       if x == 15 then
-        xfr = gg.choice({'收集所有','移除全部','白痴'})
+        xfr = gg.choice({'收集所有','移除全部','定格','到皮皮虾身边'})
         gg.setVisible(false)
         if xfr == 1 then
           collectkrill(1)
@@ -3119,7 +3136,7 @@ function domenu()
         elseif xfr == 3 then
           collectkrill(2)
         elseif xfr == 4 then
-          collectkrill(4)
+          collectkrill(5)
         end
       end
       if x == 16 then
@@ -3169,7 +3186,7 @@ function domenu()
            '🔥自动点火',
            '🌬拆除防风墙',
            '🏠更快地回家/蜡烛',
-           '🔦光倍增',
+           '🔦亮度增高',
            '🏜世界闪亮'
          },nil,'')
           if x == 1 then 
@@ -3419,10 +3436,16 @@ function domenu()
         if x == 13 then
           adr = pbase + poffsets.shoutscale
           if isfreeze(adr) then
-            setadd(adr,gg.TYPE_FLOAT,5,false)
+            setadd(adr,gg.TYPE_FLOAT,0,false)
             gg.toast('关闭')
           else
-            setadd(adr,gg.TYPE_FLOAT,5,true)
+            vsld = gg.prompt({'seek bar 1 [0; 50]'},{50},{'数量'})
+            if vsld[1] == nil then
+              vsld[1] = 5
+              else
+              vsld[1] = vsld[1] / 10
+            end
+            setadd(adr,gg.TYPE_FLOAT,vsld[1],true)
             gg.toast('打开')
           end
         end
@@ -3483,6 +3506,7 @@ function domenu()
            ,'手动收集翅膀'
            ,'锁定玩家蜡烛'
            ,'解锁长老'
+           ,'“吸收光柱（不稳定！）”'
          },nil,'')
        if x == 1 then
          y=gg.choice({
@@ -3581,7 +3605,19 @@ function domenu()
           gg.setVisible(false)
           fkelders()
         end
-        
+        if x == 7 then
+          gg.setVisible(false)
+          pmap = getmap()
+          gg.toast('点击gg停止')
+          for i = 0, 60 do
+            if gg.isVisible(true) or pmap ~= getmap() then
+              break;
+            end
+            absspirits()
+            gg.sleep(900)
+          end
+          gg.toast('吸收光柱失败')
+        end
       end
       if m == 11 then
         if hcamera() then
@@ -3692,7 +3728,7 @@ function domenu()
         scsettings()
       end
       if m == 15 then
-        x=gg.choice({'搜索 1D','打印偏移量','打印动作','打印项目','打印魔术','打印 daily','frags','拿螃蟹','扔螃蟹','撞冥龙','执行','加载坐标','门'
+        x=gg.choice({'搜索 1D','打印偏移量','打印动作','打印项目','打印魔术','打印 daily','frags','拿螃蟹','扔螃蟹','吸取光柱','执行','加载坐标','门'
         },nil,'⚠️这种功能是不稳定的')
         if x == 1 then
           xgd = gg.getResults(gg.getResultsCount())
@@ -3732,7 +3768,7 @@ function domenu()
           collectcrab(4)
         end
         if x == 10 then
-          collectkrill(1)
+          absspirits()
         end
         if x == 11 then
           local fld,lrf = pcall(load(inputstr()))
